@@ -145,14 +145,14 @@ class PMPro_Email_Template_PMProACR_Reminder_2 extends PMPro_Email_Template {
 	 */
 	public function get_email_template_variables() {
 		return array(
-			'name' => $this->user->display_name,
-			'display_name' => $this->user->display_name,
-			'user_login' => $this->user->user_login,
-			'user_email' => $this->user->user_email,
-			'membership_id' => $this->membership_level->id,
-            'membership_level_name' => $this->membership_level->name,
-            'checkout_url' => pmpro_login_url( pmpro_url( 'checkout', '?pmpro_level=' . $this->membership_level->id ) ),
-            'opt_out_url' => add_query_arg( 'pmproacr_opt_out', urlencode( $this->user->user_email ), home_url() ),
+			'!!name!!' => $this->user->display_name,
+			'!!display_name!!' => $this->user->display_name,
+			'!!user_login!!' => $this->user->user_login,
+			'!!user_email!!' => $this->user->user_email,
+			'!!membership_id!!' => $this->membership_level->id,
+			'!!membership_level_name!!' => $this->membership_level->name,
+			'!!checkout_url!!' => pmpro_login_url( pmpro_url( 'checkout', '?pmpro_level=' . $this->membership_level->id ) ),
+			'!!opt_out_url!!' => add_query_arg( 'pmproacr_opt_out', urlencode( $this->user->user_email ), home_url() ),
 		);
 	}
 
