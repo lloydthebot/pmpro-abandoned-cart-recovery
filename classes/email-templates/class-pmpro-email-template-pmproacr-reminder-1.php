@@ -164,19 +164,27 @@ class PMPro_Email_Template_PMProACR_Reminder_1 extends PMPro_Email_Template {
 	 * @return array The arguments to send the test email from the abstract class.
 	 */
 	public static function get_test_email_constructor_args() {
-		global $current_user;
-		$test_user = $current_user;
+		$test_user = wp_get_current_user();
+
+		// If no user is found, create a placeholder user for the test email.
+		if ( empty( $test_user ) || ! ( $test_user instanceof WP_User ) ) {
+			$test_user              = new WP_User( 0 );
+			$test_user->user_login  = 'test_user';
+			$test_user->user_email  = get_option( 'admin_email' );
+			$test_user->display_name = __( 'Test User', 'pmpro-abandoned-cart-recovery' );
+		}
+
 		$all_levels = pmpro_getAllLevels( true );
-		if ( !empty( $all_levels ) ) {
-			$test_user->membership_level = array_pop( $all_levels );
+		if ( ! empty( $all_levels ) ) {
+			$test_membership_level = array_pop( $all_levels );
 		} else {
 			// Provide a default membership level object.
-			$default_level = new stdClass();
-			$default_level->id = 0;
-			$default_level->name = __( 'Default Level', 'pmpro-abandoned-cart-recovery' );
-			$test_user->membership_level = $default_level;
+			$test_membership_level        = new stdClass();
+			$test_membership_level->id    = 0;
+			$test_membership_level->name  = __( 'Default Level', 'pmpro-abandoned-cart-recovery' );
 		}
-		return array( $test_user, $test_user->membership_level );
+
+		return array( $test_user, $test_membership_level );
 	}
 }
 
